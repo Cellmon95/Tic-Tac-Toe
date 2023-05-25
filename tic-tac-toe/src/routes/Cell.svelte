@@ -9,32 +9,45 @@
     }    
 </style>
 
-<script lang="ts">
-    import { empty } from "svelte/internal";
-import cross from "../assets/img/cross.svg";
-
-    enum States{
+<script lang="ts" context="module">    
+    enum State{
         Cross,
+        Empty,
         Circle,
-        Empty
     }
 
+    let lastStone:State;
+</script>
+
+<script lang="ts">
+    import { empty } from "svelte/internal";
+    import cross from "../assets/img/cross.svg";
+    import circle from "../assets/img/circle.svg";
+
+
     let src:string = "";
-    let currentState:States = States.Empty;
-    
+    export let currentState:State = State.Empty;
 
     function onClick(event:Event):void {
-        if (currentState === States.Empty) {
-            src = cross;
-            currentState = States.Cross;
+        if (currentState === State.Empty) {
+            if (lastStone === State.Cross){
+                src = circle;
+                currentState = State.Circle;
+            } else {
+                src = cross;
+                currentState = State.Cross;
+            }
+            lastStone = currentState;
+            
         }
     }
 
+    
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="cell" on:click={onClick}>
-    {#if currentState !== States.Empty}
+    {#if currentState !== State.Empty}
         <img {src} alt="cell">
     {/if}
 
