@@ -10,22 +10,25 @@
 </style>
 
 <script lang="ts">
-    import { empty } from "svelte/internal";
-import cross from "../assets/img/cross.svg";
+    import {States} from "./enums.svelte";
+    import crossImg from "../assets/img/cross.svg";
+    import circleImg from "../assets/img/circle.svg";
 
-    enum States{
-        Cross,
-        Circle,
-        Empty
-    }
-
+    const statesSrc = new Map<States, string>([
+        [States.Empty, ""],
+        [States.Circle, circleImg],
+        [States.Cross, crossImg]
+    ]);
     let src:string = "";
-    let currentState:States = States.Empty;
+    export let currentState:States = States.Empty;
+
+    $: {
+        src = statesSrc.get(currentState) as string;
+    }
     
 
     function onClick(event:Event):void {
         if (currentState === States.Empty) {
-            src = cross;
             currentState = States.Cross;
         }
     }

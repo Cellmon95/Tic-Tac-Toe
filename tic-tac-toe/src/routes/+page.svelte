@@ -1,10 +1,11 @@
 <script>
 import Cell from "./Cell.svelte";
+import {States} from "./enums.svelte";
 </script>
 
 <main>
     <div class="grid">
-        <Cell/>
+        <Cell currentState={States.Cross}/>
         <Cell/>
         <Cell/>
         <Cell/>
