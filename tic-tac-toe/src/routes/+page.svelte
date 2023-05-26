@@ -43,15 +43,11 @@
 <main>
     
     <div class="grid">
-        <Cell/>
-        <Cell/>
-        <Cell/>
-        <Cell/>
-        <Cell/>
-        <Cell/>
-        <Cell/>
-        <Cell/>
-        <Cell/>
+        {#each board as row}
+            {#each row as cell}
+                <Cell bind:currentState={cell}/>
+            {/each}
+        {/each}
     </div>
     <h1>Winner: {winner}</h1>
 </main>

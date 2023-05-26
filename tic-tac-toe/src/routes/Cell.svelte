@@ -24,8 +24,11 @@
         [State.Circle, circleImg],
         [State.Cross, crossImg]
     ]);
+    $: {
+        src = statesSrc.get(currentState) as string;
+    }
     let src:string = "";
-    let currentState:State = State.Empty;
+    export let currentState:State = State.Empty;
     $: {
         src = statesSrc.get(currentState) as string;
     }
@@ -33,8 +36,13 @@
 
     function onClick(event:Event):void {
         if (currentState === State.Empty) {
-            src = crossImg;
-            currentState = State.Cross;
+            if (lastStone === State.Cross){
+                currentState = State.Circle;
+            } else {
+                currentState = State.Cross;
+            }
+            lastStone = currentState;
+            
         }
     }
 
