@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
-    export enum States{
+    export enum State{
         Cross,
+        Empty,
         Circle,
-        Empty
     }
 </script>
