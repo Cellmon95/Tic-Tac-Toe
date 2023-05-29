@@ -16,6 +16,7 @@
 
     const hasWon = (): string => {
         let winner: string = "Undecided";
+        let boardFilled = true;
         for (let i = 0; i < board.length; i++) {
             let horisontalSum:number = 0;
             let verticalSum:number = 0;
@@ -26,12 +27,17 @@
                 verticalSum += board[j][i];
                 leftDiagonalSum += board[j][j];
                 rightDiagonlSum += board[2-j][j];
+                if (board[i][j] === 1) {
+                    boardFilled = false;
+                }
             }
             if (horisontalSum === 0 || verticalSum === 0 || leftDiagonalSum === 0 || rightDiagonlSum === 0) {
                 winner = "X";
             }
-            if (horisontalSum === 6 || verticalSum === 6 || leftDiagonalSum === 6 || rightDiagonlSum === 6) {
-                winner = "O"
+            else if (horisontalSum === 6 || verticalSum === 6 || leftDiagonalSum === 6 || rightDiagonlSum === 6) {
+                winner = "O";
+            }else if (boardFilled) {
+                winner = "Draw";
             }
         }
         return winner;
