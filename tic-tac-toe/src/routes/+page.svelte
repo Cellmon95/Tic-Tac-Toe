@@ -23,12 +23,12 @@
             id++;
         }
     }
-
+/*
     $: {
         board; //this block triggers when the board array is updated
         winner = hasWon();
     }
-
+*/
     const runAi = ():void =>{
         console.log(Math.floor(Math.random() * (board[0].length - 1)));
         let flatBoard = board.flat();
@@ -72,7 +72,8 @@
     function onClick(event:Event):void {
         if (currentGameState !== GameState.GameOver) {
             changeCellState(event.target!);
-            runAi();            
+            runAi();
+            winner = hasWon();            
         }   
     }
 
