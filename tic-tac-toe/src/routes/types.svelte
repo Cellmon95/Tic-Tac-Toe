@@ -3,6 +3,7 @@
 
     export type CellData = {
         currentState:State,
-        id:number
+        indexX:number
+        indexY:number
     }
 </script>

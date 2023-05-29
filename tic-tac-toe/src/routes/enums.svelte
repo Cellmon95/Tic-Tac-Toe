@@ -4,4 +4,10 @@
         Empty,
         Circle,
     }
+
+    export enum GameState{
+        PlayerTurn,
+        AITurn,
+        GameOver
+    }
 </script>

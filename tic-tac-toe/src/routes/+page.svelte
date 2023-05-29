@@ -3,17 +3,22 @@
     import Cell from "./Cell.svelte";
     import {State} from "./enums.svelte";
 	import type { CellData } from "./types.svelte";
+	import  {GameState} from "./enums.svelte";
+	import Game from "./game.svelte";
 
 
 
     let board: CellData[][] = new Array();
     let id:number = 0;
+    let currentGameState:GameState = GameState.PlayerTurn;
+
     for (let i = 0; i < 3; i++) {
         board[i] = new Array();
         for (let j = 0; j < 3; j++) {
             board[i][j] = {
                 currentState: State.Empty,
-                id: id
+                indexX: i,
+                indexY: j
             };
             id++;
         }
@@ -25,20 +30,16 @@
     }
 
     const runAi = ():void =>{
-        let running:boolean = true;
-        let randRow:number = Math.floor(Math.random() * board.length - 1);
-        let randColumn:number = Math.floor(Math.random() * board[0].length - 1);
-
-        while(running){
-            
-            if (board[randRow][randColumn].currentState === State.Empty) {
-                board[randRow][randColumn].currentState = State.Circle;
-                running = false;
-                break;
-            }
-
-            randRow = Math.floor(Math.random() * board.length - 1);
-            randColumn = Math.floor(Math.random() * board[0].length-  1);
+        console.log(Math.floor(Math.random() * (board[0].length - 1)));
+        let flatBoard = board.flat();
+        let emptyCells:CellData[] = flatBoard.filter(cell => cell.currentState === State.Empty);
+        
+        if (emptyCells.length === 0) {
+            currentGameState = GameState.GameOver;
+        }
+        else{
+            let rand = Math.floor(Math.random() * (emptyCells.length - 1));
+            emptyCells[rand].currentState = State.Circle;
         }
     }
 
@@ -57,34 +58,33 @@
             }
             if (horisontalSum === 0 || verticalSum === 0 || leftDiagonalSum === 0 || rightDiagonlSum === 0) {
                 winner = "X";
+                currentGameState = GameState.GameOver;
             }
             if (horisontalSum === 6 || verticalSum === 6 || leftDiagonalSum === 6 || rightDiagonlSum === 6) {
-                winner = "O"
+                winner = "O";
+                currentGameState = GameState.GameOver;
             }
         }
         return winner;
     }
 
 
-    function onClick(event:Event):void {   
-        getCellData(event.target!);
+    function onClick(event:Event):void {
+        if (currentGameState !== GameState.GameOver) {
+            changeCellState(event.target!);
+            runAi();            
+        }   
     }
 
-    //TODO: rename
-    function getCellData(eventTarget:EventTarget):void{
+    function changeCellState(eventTarget:EventTarget):void{
         let target:HTMLElement = eventTarget as HTMLElement;
-        let targetId = parseInt(target.dataset.id!, 10);
+        let targetIndexX = parseInt(target.dataset.indexX!, 10);
+        let targetIndexY = parseInt(target.dataset.indexY!, 10);
 
-        if (isNaN(targetId))
+        if (isNaN(targetIndexX) || isNaN(targetIndexY))
             throw new TypeError("Id is not a number");
-            for (let i = 0; i < board.length; i++) {
-                for (let j = 0; j < board[i].length; j++) {
-                    if (board[i][j].id === targetId) {
-                        board[i][j].currentState = State.Cross;                        
-                    }
-                }
-                
-            }
+
+        board[targetIndexX][targetIndexY].currentState = State.Cross;   
     }
 
     let winner: string = "Undecided";

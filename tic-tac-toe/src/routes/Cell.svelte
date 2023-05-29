@@ -39,7 +39,7 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="cell" on:click data-id={cellData.id}>
+<div class="cell" on:click data-index-x={cellData.indexX} data-index-y={cellData.indexY}>
     {#if cellData.currentState !== State.Empty}
         <img {src} alt="cell">
     {/if}
