@@ -1,8 +1,8 @@
 <script lang="ts" context="module">
-    import type { State } from "./enums.svelte";
+    import type { CellState } from "./enums.svelte";
 
     export type CellData = {
-        currentState:State,
+        currentState:CellState,
         indexX:number
         indexY:number
     }

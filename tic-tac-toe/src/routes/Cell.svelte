@@ -11,20 +11,20 @@
 
 <script lang="ts" context="module">    
 
-    let lastStone:State;
+    let lastStone:CellState;
 </script>
 
 <script lang="ts">
-    import {State} from "./enums.svelte";
+    import {CellState} from "./enums.svelte";
     import crossImg from "../assets/img/cross.svg";
     import circleImg from "../assets/img/circle.svg";
     import type { CellData } from "./types.svelte";
 
 
-    const statesSrc = new Map<State, string>([
-        [State.Empty, ""],
-        [State.Circle, circleImg],
-        [State.Cross, crossImg]
+    const statesSrc = new Map<CellState, string>([
+        [CellState.Empty, ""],
+        [CellState.Circle, circleImg],
+        [CellState.Cross, crossImg]
     ]);
 
     let src:string = "";
@@ -40,7 +40,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="cell" on:click data-index-x={cellData.indexX} data-index-y={cellData.indexY}>
-    {#if cellData.currentState !== State.Empty}
+    {#if cellData.currentState !== CellState.Empty}
         <img {src} alt="cell">
     {/if}
 

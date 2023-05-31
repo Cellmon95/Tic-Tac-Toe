@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-    export enum State{
+    export enum CellState{
         Cross,
         Empty,
         Circle,
@@ -9,5 +9,18 @@
         PlayerTurn,
         AITurn,
         GameOver
+    }
+
+    export enum GameResult{
+        Undecided = "Undecided",
+        Cross = "Cross",
+        Circle = "Circle",
+        Draw = "Draw",
+    }
+
+    export enum Difficulty{
+        Easy,
+        Normal,
+        Hard,
     }
 </script>
