@@ -209,6 +209,20 @@
         }
     }
 
+    function resetGame(event:Event) {
+        if (currentGameState === GameState.GameOver) {
+            board.forEach(row => {
+                row.forEach(cell => {
+                    cell.currentState = CellState.Empty;
+                });
+            });
+
+            winner = GameResult.Undecided;
+
+            currentGameState = GameState.SetDifficulty;
+        }
+    }
+
     function changeCellState(eventTarget:EventTarget):void{
         let target:HTMLElement = eventTarget as HTMLElement;
         let targetIndexX:number = parseInt(target.dataset.indexX!, 10);
@@ -222,8 +236,9 @@
 
 </script>
 
-<main>
+<svelte:window on:keydown={resetGame}></svelte:window>
 
+<main>
     {#if currentGameState === GameState.SetDifficulty}
         <div class="difficulty-settings">
             <h1>Select Difficulty</h1>
