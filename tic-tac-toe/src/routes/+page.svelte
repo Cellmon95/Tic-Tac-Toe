@@ -9,8 +9,9 @@
     
     let board: CellData[][] = new Array();
     let id:number = 0;
-    let currentGameState:GameState = GameState.PlayerTurn;
+    let currentGameState:GameState = GameState.SetDifficulty;
     let winner: GameResult = GameResult.Undecided;
+    let currentDifficulty:Difficulty = Difficulty.Easy;
 
     for (let i = 0; i < 3; i++) {
         board[i] = new Array();
@@ -176,21 +177,42 @@
     }
 
 
-    function onClick(event:Event):void {
+    function onCellClick(event:Event):void {
         if (currentGameState !== GameState.GameOver) {
             changeCellState(event.target!);          
             winner = hasWon();
         }
         if (currentGameState !== GameState.GameOver) {
-            runAi(Difficulty.Hard);
+            runAi(currentDifficulty);
             winner = hasWon();        
         }   
     }
 
+    function onDifficultyClick(event:Event) {
+        let selectedDifficulty:string | undefined = (event.target as HTMLElement).dataset.difficulty;
+
+        currentGameState = GameState.PlayerTurn;
+
+        switch (selectedDifficulty) {
+            case "easy":
+                currentDifficulty = Difficulty.Easy;
+                break;
+            case "normal":
+                currentDifficulty = Difficulty.Normal;
+            break;
+            case "hard":
+                currentDifficulty = Difficulty.Hard;
+            break;
+        
+            default:
+                throw TypeError("unexpected value in selected difficulty.")
+        }
+    }
+
     function changeCellState(eventTarget:EventTarget):void{
         let target:HTMLElement = eventTarget as HTMLElement;
-        let targetIndexX = parseInt(target.dataset.indexX!, 10);
-        let targetIndexY = parseInt(target.dataset.indexY!, 10);
+        let targetIndexX:number = parseInt(target.dataset.indexX!, 10);
+        let targetIndexY:number = parseInt(target.dataset.indexY!, 10);
 
         if (isNaN(targetIndexX) || isNaN(targetIndexY))
             throw new TypeError("Id is not a number");
@@ -201,13 +223,23 @@
 </script>
 
 <main>
-    
-    <div class="grid">
-        {#each board as row}
-            {#each row as cell}
-                <Cell bind:cellData={cell}  on:click={onClick}/>
+
+    {#if currentGameState === GameState.SetDifficulty}
+        <div class="difficulty-settings">
+            <h1>Select Difficulty</h1>
+            <button on:click={onDifficultyClick} data-difficulty="easy">Easy</button>
+            <button on:click={onDifficultyClick} data-difficulty="normal">Normal</button>
+            <button on:click={onDifficultyClick} data-difficulty="hard">Impossible</button>
+        </div>
+    {:else}
+        <div class="grid">
+            {#each board as row}
+                {#each row as cell}
+                    <Cell bind:cellData={cell}  on:click={onCellClick}/>
+                {/each}
             {/each}
-        {/each}
-    </div>
-    <h1>Winner: {winner}</h1>
+        </div>
+        <h1>Winner: {winner}</h1>
+    {/if}
+
 </main>

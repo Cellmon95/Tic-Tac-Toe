@@ -6,6 +6,7 @@
     }
 
     export enum GameState{
+        SetDifficulty,
         PlayerTurn,
         AITurn,
         GameOver

@@ -12,3 +12,21 @@ main{
     grid-template-columns: 100px 100px 100px;
     grid-template-rows: 100px 100px 100px;
 }
+
+.difficulty-settings{
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
+
+button{
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	outline: none;
+    font-size: large;
+
+
+}
